@@ -12,6 +12,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "element-plus": "^2.4.2",
     "vue": "^3.3.4"
   },
   "devDependencies": {

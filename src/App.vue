@@ -1,47 +1,44 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+<script setup lang="tsx">
+import { ref } from "vue";
+import { BasicTableCell, CustomTableCell } from "./components/LEGO/TableCell.tsx";
+
+const tableData = ref([
+  {
+    line1: "Hello World1",
+    line2: <span style="color: red">Hello World1</span>,
+  },
+  {
+    line1: "Hello World2",
+    line2: <span style="color: blue">Hello World2</span>,
+  },
+  {
+    line1: "Hello World3",
+    line2: <span style="color: green">Hello World3</span>,
+  },
+])
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <div>
+    <ElTable :data="tableData" style="width: 100%">
+      <ElTableColumn label="line1" width="180">
+        <template #default="scope">
+          <BasicTableCell 
+            :content="scope.row.line1"
+          />
+        </template>
+      </ElTableColumn>
+      <ElTableColumn label="line2">
+        <template #default="scope">
+          <CustomTableCell 
+            :vnodes="scope.row.line2"
+          />
+        </template>
+      </ElTableColumn>
+    </ElTable>
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
 </style>
