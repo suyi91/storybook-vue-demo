@@ -1,19 +1,21 @@
+import { _formKey } from '@/Form';
 import { ElFormItem } from 'element-plus'
+import { inject, toRef } from 'vue'
 
-export const CustomFormItem = (props) => {
+export const CustomFormItem = (props, { slots }) => {
+  const form = inject(_formKey, {});
+  const value = toRef(form.value, props.config.prop)
   return (
-    <ElFormItem {...props.config}>{props.vnodes}</ElFormItem>
+    <ElFormItem {...props.config}>{slots.default?.(value)}</ElFormItem>
   )
 }
 
 export const InputFormItem = (props) => {
-  const vnodes = <ElInput />
   return (
     <CustomFormItem 
       {...{
         config: props.config,
-        vnodes,
       }}
-    />
+    >{{default: val => (<ElInput v-model={val.value} />)}}</CustomFormItem>
   )
 }

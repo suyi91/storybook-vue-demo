@@ -1,4 +1,4 @@
-import { defineComponent } from "vue";
+import { defineComponent, provide, toRef } from "vue";
 import { ElForm } from 'element-plus'
 import { CustomFormItem, InputFormItem } from './components/LEGO/FormItem'
 
@@ -29,14 +29,21 @@ const getComponent = compName => {
       return CustomFormItem;
   }
 }
-
+export const _formKey = '__syForm';
 const Form = defineComponent({
+  props: {
+    form: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   setup: (props, ctx) => {
+    provide(_formKey, toRef(props, 'form'))
     return () => (
-      <ElForm>{formConfigs.map(config => {
+      <ElForm model={props.form}>{formConfigs.map(config => {
         const Component = getComponent(config.component.name)
         return (
-          <Component 
+          <Component
             key={config.prop}
             config={{
               prop: config.prop,
