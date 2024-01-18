@@ -1,17 +1,16 @@
 <script setup lang="tsx">
-import Table from './Table'
-import Form from './Form'
-import { reactive } from 'vue';
+import { useRoute } from 'vue-router'
 
-const form = reactive({
-  name: 'name',
-  name2: 'name2ss',
-})
+const route = useRoute()
+
 </script>
 
 <template>
-  <Form :form="form" style="width: 100%;" />
-  <Table style="width: 100%;" />
+  <template v-if="route.fullPath === '/'">
+    <div><router-link to="/table">table</router-link></div>
+    <div><router-link to="/form">form</router-link></div>
+  </template>
+  <router-view></router-view>
 </template>
 
 <style scoped>

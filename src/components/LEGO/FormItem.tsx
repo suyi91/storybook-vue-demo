@@ -6,16 +6,18 @@ export const CustomFormItem = (props, { slots }) => {
   const form = inject(_formKey, {});
   const value = toRef(form.value, props.config.prop)
   return (
-    <ElFormItem {...props.config}>{slots.default?.(value)}</ElFormItem>
+    <ElFormItem {...props.config}>{slots.default?.(value.value)}</ElFormItem>
   )
 }
 
 export const InputFormItem = (props) => {
+  const form = inject(_formKey, {});
+  const value = toRef(form.value, props.config.prop)
   return (
-    <CustomFormItem 
+    <CustomFormItem
       {...{
         config: props.config,
       }}
-    >{{default: val => (<ElInput v-model={val.value} />)}}</CustomFormItem>
+    >{{default: () => (<ElInput v-model={value.value} />)}}</CustomFormItem>
   )
 }
