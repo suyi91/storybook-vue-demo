@@ -1,15 +1,18 @@
 import { defineComponent, provide, toRef } from "vue";
 import { ElForm } from 'element-plus'
-import { CustomFormItem, InputFormItem } from './components/LEGO/FormItem'
+import { CustomFormItem, DatePickerFormItem, InputFormItem, SelectFormItem } from './components/LEGO/FormItem'
 
 const isString = val => typeof val === 'string';
 
 const getComponent = compName => {
   switch(compName) {
-    case 'custom':
-      return CustomFormItem;
     case 'input':
       return InputFormItem;
+    case 'select':
+      return SelectFormItem;
+    case 'datePicker':
+      return DatePickerFormItem;
+    case 'custom':
     default:
       return CustomFormItem;
   }
@@ -21,20 +24,29 @@ const Form = defineComponent({
       type: Object,
       default: () => ({})
     },
+    formConfigs: {
+      type: Object,
+      default: () => ({}),
+    },
     itemConfigs: {
       type: Array,
       default: () => [],
-    }
+    },
+    itemConfigsPreHandler: {
+      type: Function,
+    },
   },
   setup: (props, ctx) => {
     provide(_formKey, toRef(props, 'form'))
+    const itemConfigs = props.itemConfigsPreHandler?.(props.itemConfigs) || props.itemConfigs
     return () => (
-      <ElForm model={props.form}>{props.itemConfigs.map(config => {
+      <ElForm {...props.formConfigs} model={props.form}>{itemConfigs.map(config => {
         const Component = getComponent(config.component.name)
         let customSlot = null;
         if (config.component.name === 'custom') {
           customSlot = config.component.customSlot
         }
+        const {name, ...extra} = config.component
 
         return (
           <Component
@@ -43,6 +55,7 @@ const Form = defineComponent({
               prop: config.prop,
               label: config.label,
             }}
+            extra={extra}
             v-slots={{
               default: isString(customSlot) ? ctx.slots[customSlot] : customSlot
             }}
