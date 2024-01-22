@@ -76,6 +76,16 @@ const formItemConfigs = [
         clearable: true,
       },
     },
+  },
+  {
+    prop: 'name7',
+    label: '使用方自定义',
+    component: {
+      name: 'Test',
+    },
+    itemProps: {
+      'validateStatus': 'validating'
+    },
   }
 ]
 
@@ -87,12 +97,18 @@ const itemConfigsPreHandler = configList => {
   return configList
 }
 
+const formCustomComps = {
+  Test: {
+    setup: () => () => <div>testsssss</div>
+  },
+}
 </script>
 
 <template>
   <Form
-    :form="form"
+    :model="form"
     :formConfigs="formConfigs"
+    :formCustomComps="formCustomComps"
     :itemConfigs="formItemConfigs"
     :itemConfigsPreHandler="itemConfigsPreHandler"
     style="width: 100%;"
