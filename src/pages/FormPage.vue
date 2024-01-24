@@ -1,5 +1,6 @@
 <script setup lang="tsx">
 import Form from '../Form'
+import '../setupGlobalFormItem'
 import { reactive, ref } from 'vue';
 
 const form = reactive({

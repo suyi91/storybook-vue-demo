@@ -1,21 +1,33 @@
 import { defineComponent, inject, provide, toRef } from "vue";
 import { ElForm } from 'element-plus'
-import { CustomFormItem, DatePickerFormItem, InputFormItem, SelectFormItem } from './components/LEGO/FormItem'
+import {
+  CustomFormItem,
+} from './components/LEGO/FormItem'
 
 const isString = val => typeof val === 'string';
 
 const registerCustomItemFn = registry => (name, Comp) => {
-  registry[name] = props => {
-    const form = inject(_formKey, {});
-    const value = toRef(form.value, props.config.prop)
-    return (
-      <CustomFormItem
-        {...{
-          config: props.config,
-        }}
-      >{{default: () => <Comp v-model={value.value} {...props.extra.compProps} />}}</CustomFormItem>
-    )
-  };
+  registry[name] = defineComponent({
+    props: {
+      config: {
+        type: Object,
+        required: true,
+      },
+      extra: {
+        type: Object,
+        required: true,
+      }
+    },
+    setup: (props) => {
+      const form = inject(_formKey, {});
+      const value = toRef(form.value, props.config.prop)
+      return () => (
+        <CustomFormItem
+          config={props.config}
+        >{{default: () => <Comp v-model={value.value} compProps={props.extra.compProps} extra={props.extra} />}}</CustomFormItem>
+      )
+    }
+  })
   return registry[name];
 }
 
@@ -30,12 +42,6 @@ const getGlobalComponent = compName => {
   const CustomComp = getGlobalCustomItem(compName)
   if (CustomComp) return CustomComp
   switch(compName) {
-    case 'input':
-      return InputFormItem;
-    case 'select':
-      return SelectFormItem;
-    case 'datePicker':
-      return DatePickerFormItem;
     case 'custom':
       return CustomFormItem;
     default:
