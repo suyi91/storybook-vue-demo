@@ -28,11 +28,11 @@ const tableConfig = {
       prop: "line3",
       component: {
         name: 'HtmlTableCell',
-        ext: {
+        extra: {
           tag: 'i',
         }
       },
-      
+
     }
   ],
 }
@@ -55,7 +55,7 @@ const tableData = ref([
   },
 ])
 
-const getCellComponent = (componentName: string, ext = {}, val) => {
+const getCellComponent = (componentName: string, extra = {}, val) => {
   let Component = 'span'
   let props = {}
   switch (componentName) {
@@ -69,7 +69,7 @@ const getCellComponent = (componentName: string, ext = {}, val) => {
       break
     case 'HtmlTableCell':
       Component = HtmlTableCell
-      props = { ...ext, content: val }
+      props = { ...extra, content: val }
       break
     default:
       break
@@ -89,7 +89,7 @@ const Table = defineComponent({
         {...tableConfig.config}
       >
         {tableConfig.columns.map(column => (
-          <ElTableColumn 
+          <ElTableColumn
             key={column.prop}
             prop={column.prop}
             label={column.label}
@@ -97,12 +97,12 @@ const Table = defineComponent({
           >{{
             default: scope => {
               const { Component, props } = getCellComponent(
-                column.component.name, 
-                column.component.ext, 
+                column.component.name,
+                column.component.extra,
                 scope.row[column.prop]
               )
               return (
-                <Component 
+                <Component
                   {...props}
                 />
               )
