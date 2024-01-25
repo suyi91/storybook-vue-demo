@@ -1,59 +1,6 @@
 import { ElTable, ElTableColumn } from "element-plus"
-import { defineComponent, ref } from "vue"
+import { defineComponent } from "vue"
 import { BasicTableCell, CustomTableCell, HtmlTableCell } from "./components/LEGO/TableCell"
-
-const tableConfig = {
-  config: {
-    fit: true,
-  },
-  columns: [
-    {
-      label: "line1",
-      prop: "line1",
-      width: 180,
-      component: {
-        name: "BasicTableCell",
-      },
-    },
-    {
-      label: "line2",
-      prop: "line2",
-      component: {
-        name: 'CustomTableCell',
-        // TODO:
-      },
-    },
-    {
-      label: "line3",
-      prop: "line3",
-      component: {
-        name: 'HtmlTableCell',
-        extra: {
-          tag: 'i',
-        }
-      },
-
-    }
-  ],
-}
-
-const tableData = ref([
-  {
-    line1: "Hello World1",
-    line2: <span style="color: red">Hello World1</span>,
-    line3: `<span style="color: red">New Hello World1</span>`,
-  },
-  {
-    line1: "Hello World2",
-    line2: <span style="color: blue">Hello World2</span>,
-    line3: `<span style="color: blue">New Hello World2</span>`,
-  },
-  {
-    line1: "Hello World3",
-    line2: <span style="color: green">Hello World3</span>,
-    line3: `<span style="color: green">New Hello World3</span>`,
-  },
-])
 
 const getCellComponent = (componentName: string, extra = {}, val) => {
   let Component = 'span'
@@ -82,13 +29,26 @@ const getCellComponent = (componentName: string, extra = {}, val) => {
 }
 
 const Table = defineComponent({
-  setup: (props, ctx) => {
+  props: {
+    tableConfig: {
+      type: Object,
+      default: () => ({
+        config: {},
+        columns: [],
+      }),
+    },
+    tableData: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  setup: (props) => {
     return () => (
       <ElTable
-        data={tableData.value}
-        {...tableConfig.config}
+        data={props.tableData}
+        {...props.tableConfig.config}
       >
-        {tableConfig.columns.map(column => (
+        {props.tableConfig.columns.map(column => (
           <ElTableColumn
             key={column.prop}
             prop={column.prop}

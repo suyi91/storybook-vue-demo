@@ -1,0 +1,34 @@
+{
+    "config": {
+      "fit": true,
+      "border": true
+    },
+    "columns": [
+      {
+        "label": "line1",
+        "prop": "line1",
+        "width": 180,
+        "component": {
+          "name": "BasicTableCell"
+        }
+      },
+      {
+        "label": "line2",
+        "prop": "line2",
+        "component": {
+          "name": "CustomTableCell"
+        }
+      },
+      {
+        "label": "line3",
+        "prop": "line3",
+        "component": {
+          "name": "HtmlTableCell",
+          "extra": {
+            "tag": "i"
+          }
+        }
+      }
+    ]
+  }
+  

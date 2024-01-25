@@ -1,8 +1,6 @@
-import { defineComponent, inject, provide, toRef } from "vue";
+import { defineComponent, inject, provide, ref, toRef } from "vue";
 import { ElForm } from 'element-plus'
-import {
-  CustomFormItem,
-} from './components/LEGO/FormItem'
+import { CustomFormItem } from './components/LEGO/FormItem'
 
 const isString = val => typeof val === 'string';
 
@@ -56,7 +54,7 @@ const Form = defineComponent({
       type: Object,
       default: () => ({})
     },
-    formConfigs: {
+    formConfig: {
       type: Object,
       default: () => ({}),
     },
@@ -72,6 +70,7 @@ const Form = defineComponent({
       type: Function,
     },
   },
+  expose: ['validate', 'validateField', 'scrollToField', 'resetFields', 'clearValidate'],
   setup: (props) => {
     // 自定义组件注册表
     const customRegistry = {}
@@ -82,14 +81,23 @@ const Form = defineComponent({
     provide(_formKey, toRef(props, 'model'))
     const itemConfigs = props.itemConfigsPreHandler?.(props.itemConfigs) ?? props.itemConfigs
 
+    const formRef = ref()
+    const formMethods = {};
+    ['validate', 'validateField', 'scrollToField', 'resetFields', 'clearValidate'].forEach(key => {
+      formMethods[key] = (...args) => formRef.value?.[key](...args)
+    })
+
     return {
       itemConfigs,
       customRegistry,
+
+      formRef,
+      ...formMethods,
     }
   },
   render() {
     return (
-      <ElForm {...this.formConfigs} model={this.model}>{this.itemConfigs.map(config => {
+      <ElForm ref="formRef" {...this.formConfig} model={this.model}>{this.itemConfigs.map(config => {
         const Component = this.customRegistry[config.component.name] ?? getGlobalComponent(config.component.name)
         let customSlot = null;
         if (config.component.name === 'custom') {

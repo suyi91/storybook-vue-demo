@@ -9,6 +9,7 @@ const route = useRoute()
   <template v-if="route.fullPath === '/'">
     <div><router-link to="/table">table</router-link></div>
     <div><router-link to="/form">form</router-link></div>
+    <div><router-link to="/demo/marketingTaskPage">demo/marketingTaskPage</router-link></div>
   </template>
   <router-view></router-view>
 </template>

@@ -39,7 +39,7 @@ const _Select = defineComponent({
         v-model={data.value}
         {...props.compProps}
       >{
-        unref(props.extra?.options || []).map(option => <ElOption key={option.value} value={option.value} label={option.label} />)
+        (unref(props.extra?.options) || []).map(option => <ElOption key={option.value} value={option.value} label={option.label} />)
       }</ElSelect>
     )
   },

@@ -8,6 +8,7 @@ import Element from 'element-plus'
 
 import FormPage from './pages/FormPage.vue'
 import TablePage from './pages/TablePage.vue'
+import MarketingTaskPage from './demoPages/marketingTaskPage/index.vue'
 
 const Default = defineComponent({ render: () => null })
 
@@ -16,7 +17,8 @@ const router = createRouter({
   routes: [
     { path: '/', component: Default },
     { path: '/form', component: FormPage },
-    { path: '/table', component: TablePage }
+    { path: '/table', component: TablePage },
+    { path: '/demo/marketingTaskPage', component: MarketingTaskPage },
   ]
 })
 

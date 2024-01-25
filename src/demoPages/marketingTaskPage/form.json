@@ -1,0 +1,66 @@
+{
+    "formConfig": {
+      "labelWidth": "120px",
+      "inline": true
+    },
+    "formItemConfigs": [
+      {
+        "prop": "taskCode",
+        "label": "任务活动编码",
+        "component": {
+          "name": "input",
+          "compProps": {
+            "clearable": true
+          }
+        }
+      },
+      {
+        "prop": "taskName",
+        "label": "任务活动名称",
+        "component": {
+          "name": "input",
+          "compProps": {
+            "clearable": true
+          }
+        }
+      },
+      {
+        "prop": "taskStatus",
+        "label": "任务活动状态",
+        "component": {
+          "name": "select",
+          "compProps": {
+            "clearable": true
+          },
+          "options": [
+            { "label": "草稿", "value": "DRAFT" },
+            { "label": "待生效", "value": "NOT_STARTED" },
+            { "label": "生效中", "value": "ENABLE_STATUS" },
+            { "label": "已结束", "value": "ALREADY_END_STATUS" },
+            { "label": "已停用", "value": "ALREADY_STOP_STATUS" }
+          ]
+        }
+      },
+      {
+        "prop": "timeRange",
+        "label": "有效时间",
+        "component": {
+          "name": "datePicker",
+          "compProps": {
+            "type": "datetimerange"
+          }
+        }
+      },
+      {
+        "prop": "cityCode",
+        "label": "城市",
+        "component": {
+          "name": "select",
+          "compProps": {
+            "clearable": true
+          }
+        }
+      }
+    ]
+  }
+  

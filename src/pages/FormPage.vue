@@ -11,7 +11,7 @@ const form = reactive({
   name5: 1,
 })
 
-const formConfigs = {
+const formConfig = {
   labelWidth: '120px',
 }
 
@@ -103,12 +103,15 @@ const formCustomComps = {
     setup: () => () => <div>testsssss</div>
   },
 }
+
+const formRef = ref()
 </script>
 
 <template>
   <Form
+    ref="formRef"
     :model="form"
-    :formConfigs="formConfigs"
+    :formConfig="formConfig"
     :formCustomComps="formCustomComps"
     :itemConfigs="formItemConfigs"
     :itemConfigsPreHandler="itemConfigsPreHandler"
