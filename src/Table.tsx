@@ -29,6 +29,7 @@ const getCellComponent = (componentName: string, extra = {}, val) => {
 }
 
 const Table = defineComponent({
+  name: 'Table',
   props: {
     tableConfig: {
       type: Object,

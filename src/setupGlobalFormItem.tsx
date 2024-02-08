@@ -4,6 +4,7 @@ import { defineComponent, unref } from "vue"
 import { registerGlobalCustomItem } from "./Form"
 
 const _Input = defineComponent({
+  name: 'Input',
   props: {
     compProps: {
       type: Object,
@@ -21,6 +22,7 @@ const _Input = defineComponent({
 })
 
 const _Select = defineComponent({
+  name: 'Select',
   props: {
     compProps: {
       type: Object,
@@ -46,6 +48,7 @@ const _Select = defineComponent({
 })
 
 const _DatePicker = defineComponent({
+  name: 'DatePicker',
   props: {
     compProps: {
       type: Object,

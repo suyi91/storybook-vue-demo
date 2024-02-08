@@ -3,6 +3,7 @@ import { ElFormItem } from 'element-plus'
 import { defineComponent, inject, toRef } from 'vue'
 
 export const CustomFormItem = defineComponent({
+  name: 'CustomFormItem',
   props: {
     config: {
       type: Object,

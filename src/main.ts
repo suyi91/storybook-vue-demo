@@ -10,6 +10,8 @@ import FormPage from './pages/FormPage.vue'
 import TablePage from './pages/TablePage.vue'
 import MarketingTaskPage from './demoPages/marketingTaskPage/index.vue'
 
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+
 const Default = defineComponent({ render: () => null })
 
 const router = createRouter({
@@ -22,7 +24,13 @@ const router = createRouter({
   ]
 })
 
-createApp(App)
+const app = createApp(App)
+
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
+
+app
   .use(router)
   .use(Element)
   .mount('#app')

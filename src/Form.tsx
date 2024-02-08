@@ -1,6 +1,7 @@
 import { defineComponent, inject, provide, ref, toRef } from "vue";
 import { ElForm } from 'element-plus'
 import { CustomFormItem } from './components/LEGO/FormItem'
+import Layout from "./Layout";
 
 const isString = val => typeof val === 'string';
 
@@ -49,6 +50,7 @@ const getGlobalComponent = compName => {
 export const _formKey = '__syForm';
 
 const Form = defineComponent({
+  name: 'Form',
   props: {
     model: {
       type: Object,
@@ -96,31 +98,46 @@ const Form = defineComponent({
     }
   },
   render() {
-    return (
-      <ElForm ref="formRef" {...this.formConfig} model={this.model}>{this.itemConfigs.map(config => {
-        const Component = this.customRegistry[config.component.name] ?? getGlobalComponent(config.component.name)
-        let customSlot = null;
-        if (config.component.name === 'custom') {
-          customSlot = config.component.customSlot
-        }
-        const {name, ...extra} = config.component
+    const renderFormItem = formItemConfig => {
+      const Component = this.customRegistry[formItemConfig.component.name] ?? getGlobalComponent(formItemConfig.component.name)
+      let customSlot = null;
+      if (formItemConfig.component.name === 'custom') {
+        customSlot = formItemConfig.component.customSlot
+      }
+      const {name, ...extra} = formItemConfig.component
 
-        if (!Component) return null
-        return (
-          <Component
-            key={config.prop}
-            config={{
-              prop: config.prop,
-              label: config.label,
-              ...config.itemProps,
-            }}
-            extra={extra}
-            v-slots={{
-              default: isString(customSlot) ? this.$slots[customSlot] : customSlot
-            }}
-          />
-         )
-      })}</ElForm>
+      if (!Component) return null
+      return (
+        <Component
+          key={formItemConfig.prop}
+          config={{
+            prop: formItemConfig.prop,
+            label: formItemConfig.label,
+            ...formItemConfig.itemProps,
+          }}
+          extra={extra}
+          v-slots={{
+            default: isString(customSlot) ? this.$slots[customSlot] : customSlot
+          }}
+        />
+      )
+    }
+    let content;
+    if (this.formConfig.layout === 'flex') {
+      content = <Layout config={{
+        type: 'flex',
+        children: this.itemConfigs.map(config => ({
+          layout: config.layout,
+          content: renderFormItem(config),
+          customClass: config.customClass,
+          customStyle: config.customStyle,
+        }))
+      }} />
+    } else {
+      content = this.itemConfigs.map(config => renderFormItem(config))
+    }
+    return (
+      <ElForm ref="formRef" {...this.formConfig} model={this.model}>{content}</ElForm>
     )
   }
 })
