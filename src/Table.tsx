@@ -1,4 +1,4 @@
-import { ElTable, ElTableColumn } from "element-plus"
+import { ElTable, ElTableColumn, ElPagination } from "element-plus"
 import { defineComponent } from "vue"
 import { BasicTableCell, CustomTableCell, HtmlTableCell } from "./components/LEGO/TableCell"
 
@@ -42,9 +42,12 @@ const Table = defineComponent({
       type: Array,
       default: () => [],
     },
+    pagination: {
+      type: [Boolean, Object],
+    },
   },
   setup: (props) => {
-    return () => (
+    return () => [
       <ElTable
         data={props.tableData}
         {...props.tableConfig.config}
@@ -71,8 +74,22 @@ const Table = defineComponent({
           }}
           </ElTableColumn>
         ))}
-      </ElTable>
-    )
+      </ElTable>,
+      props.pagination && (
+        <div style="margin-top: 16px; display: flex;">
+          <ElPagination
+            style="margin-left: auto;"
+            {...{
+              ...props.pagination,
+              'currentPage': props.pagination.currentPage,
+              'onUpdate:currentPage': val => props.pagination.currentPage = val,
+              'pageSize': props.pagination.pageSize,
+              'onUpdate:pageSize': val => props.pagination.pageSize = val,
+            }}
+          />
+        </div>
+      ),
+    ]
   },
 })
 

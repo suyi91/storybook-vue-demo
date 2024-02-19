@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { reactive, ref } from 'vue'
+import { reactive, ref, watchEffect } from 'vue'
 import Form from '../../Form'
 import formJson from './form.json'
 import { queryCityList } from '../../demoApi/cityList'
@@ -15,6 +15,16 @@ const form = reactive({
   cityCode: '',
 })
 
+const pagination = reactive({
+  currentPage: 1,
+  pageSize: 10,
+  total: 0,
+  small: false,
+  pageSizes: [10, 20, 30, 50],
+  background: true,
+  layout: "total, sizes, prev, pager, next, jumper",
+})
+
 const cityList = ref()
 
 const itemConfigsPreHandler = configList => {
@@ -22,8 +32,30 @@ const itemConfigsPreHandler = configList => {
   return configList
 }
 
+const search = ({ pageSize, currentPage }) => {
+  // TODO:
+  console.log('in search: ', pageSize, currentPage)
+
+  return null
+}
+
+const clickSearch = () => {
+  search({
+    pageSize: pagination.pageSize,
+    currentPage: pagination.currentPage,
+  })
+}
+
 queryCityList().then(list => {
   cityList.value = list
+})
+
+
+watchEffect(() => {
+  search({
+    pageSize: pagination.pageSize,
+    currentPage: pagination.currentPage,
+  })
 })
 
 </script>
@@ -36,8 +68,8 @@ queryCityList().then(list => {
       :itemConfigsPreHandler="itemConfigsPreHandler"
     >
       <template #ops>
-        <ElButton type="primary">
-          <ElIcon style="vertical-align: middle">
+        <ElButton type="primary" @click="clickSearch">
+          <ElIcon style="vertical-align: middle; margin-right: 8px">
             <Search />
           </ElIcon>
           搜索
@@ -46,6 +78,7 @@ queryCityList().then(list => {
     </Form>
     <Table
       :tableConfig="tableJson"
+      :pagination="pagination"
     />
   </div>
 </template>

@@ -4,7 +4,8 @@ import 'element-plus/theme-chalk/index.css'
 
 import { createApp, defineComponent } from 'vue'
 import App from './App.vue'
-import Element from 'element-plus'
+import ElementPlus from 'element-plus'
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 import FormPage from './pages/FormPage.vue'
 import TablePage from './pages/TablePage.vue'
@@ -32,5 +33,5 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 app
   .use(router)
-  .use(Element)
+  .use(ElementPlus, { locale: zhCn })
   .mount('#app')
