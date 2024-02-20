@@ -1,10 +1,18 @@
 {
   "config": {
     "fit": true,
+    "stripe": true,
     "border": true,
     "height": 500
   },
   "columns": [
+    {
+      "prop": "selection",
+      "type": "selection",
+      "colProps": {
+        "align": "center"
+      }
+    },
     {
       "label": "line1",
       "prop": "line1",

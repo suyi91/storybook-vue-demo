@@ -31,6 +31,7 @@ const getCellComponent = (componentName: string, extra = {}, val) => {
 const Table = defineComponent({
   name: 'Table',
   props: {
+    loading: Boolean,
     tableConfig: {
       type: Object,
       default: () => ({
@@ -49,6 +50,7 @@ const Table = defineComponent({
   setup: (props) => {
     return () => [
       <ElTable
+        vLoading={props.loading}
         data={props.tableData}
         {...props.tableConfig.config}
       >
@@ -58,8 +60,11 @@ const Table = defineComponent({
             prop={column.prop}
             label={column.label}
             width={column.width}
+            type={column.type}
+            {...column.colProps}
           >{{
             default: scope => {
+              if (column.type === 'selection') return null
               const { Component, props } = getCellComponent(
                 column.component.name,
                 column.component.extra,
@@ -82,9 +87,15 @@ const Table = defineComponent({
             {...{
               ...props.pagination,
               'currentPage': props.pagination.currentPage,
-              'onUpdate:currentPage': val => props.pagination.currentPage = val,
+              'onUpdate:currentPage': val => {
+                props.pagination.currentPage = val
+                props.pagination.onCurrentPageChange?.(val)
+              },
               'pageSize': props.pagination.pageSize,
-              'onUpdate:pageSize': val => props.pagination.pageSize = val,
+              'onUpdate:pageSize': val => {
+                props.pagination.pageSize = val
+                props.pagination.onPageSizeChange?.(val)
+              },
             }}
           />
         </div>
